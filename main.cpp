@@ -47,20 +47,37 @@ int main(int argc, char **argv)
     // Convert the image to a matrix
     std::vector<std::vector<std::vector<int>>> matrix = convertMatToMatrix(image);
 
-    // Access RGB values in the matrix (example):
-    std::vector<int> rgbValues = matrix[100][100];
-    std::cout << "RGB values at (100, 100): "
-              << "R=" << rgbValues[0] << " G=" << rgbValues[1] << " B=" << rgbValues[2] << std::endl;
+    char input;
+    while (true)
+    {
+        std::cout << "Enter 'i' to invert the image, 'b' to change the brightness, or 'q' to quit: ";
+        std::cin >> input;
+        switch (input)
+        {
+        case 'i':
+            std::cout << "Inverting the image." << std::endl;
+            invert_image(matrix);
+            break;
+        case 'b':
+            std::cout << "Enter the brightness value: ";
+            int brightness;
+            std::cin >> brightness;
+            std::cout << "Changing the brightness of the image by " << brightness << std::endl;
+            change_brightness(matrix, brightness);
+            break;
+        case 's':
+            std::cout << "Showing the image." << std::endl;
+            image = convertMatrixToMat(matrix);
+            cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
+            cv::imshow("Display Image", image);
+            cv::waitKey(0);
+            break;
+        default:
+            std::cout << "Quitting." << std::endl;
+            return 0;
+            break;
+        }
+    }
 
-    // Change the brightness of the image
-    invert_image(matrix);
-
-    // Convert the matrix back to an image
-    image = convertMatrixToMat(matrix);
-
-    // Display image
-    cv::namedWindow("Display Image", cv::WINDOW_AUTOSIZE);
-    cv::imshow("Display Image", image);
-    cv::waitKey(0);
     return 0;
 }
