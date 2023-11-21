@@ -39,6 +39,43 @@ void invert_image(std::vector<std::vector<std::vector<int>>> &matrix)
     }
 }
 
+void change_contrast(std::vector<std::vector<std::vector<int>>> &matrix, float contrast)
+{
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            for (int k = 0; k < matrix[0][0].size(); ++k)
+            {
+                matrix[i][j][k] *= contrast;
+                if (matrix[i][j][k] > 255)
+                {
+                    matrix[i][j][k] = 255;
+                }
+                else if (matrix[i][j][k] < 0)
+                {
+                    matrix[i][j][k] = 0;
+                }
+            }
+        }
+    }
+}
+
+void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix)
+{
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            // int gray = (matrix[i][j][0] + matrix[i][j][1] + matrix[i][j][2]) / 3;
+            int gray = 0.3 * matrix[i][j][0] + 0.6 * matrix[i][j][1] + 0.1 * matrix[i][j][2];
+            matrix[i][j][0] = gray;
+            matrix[i][j][1] = gray;
+            matrix[i][j][2] = gray;
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
     // Read image file
@@ -50,7 +87,13 @@ int main(int argc, char **argv)
     char input;
     while (true)
     {
-        std::cout << "Enter 'i' to invert the image, 'b' to change the brightness, or 'q' to quit: ";
+        std::cout << "Enter the operation to perform on the image:" << std::endl;
+        std::cout << "i: Invert the image" << std::endl;
+        std::cout << "b: Change the brightness of the image" << std::endl;
+        std::cout << "c: Change the contrast of the image" << std::endl;
+        std::cout << "g: Make the image gray" << std::endl;
+        std::cout << "s: Show the image" << std::endl;
+        std::cout << "q: Quit" << std::endl;
         std::cin >> input;
         switch (input)
         {
@@ -64,6 +107,17 @@ int main(int argc, char **argv)
             std::cin >> brightness;
             std::cout << "Changing the brightness of the image by " << brightness << std::endl;
             change_brightness(matrix, brightness);
+            break;
+        case 'c':
+            std::cout << "Enter the contrast value: ";
+            float contrast;
+            std::cin >> contrast;
+            std::cout << "Changing the contrast of the image by " << contrast << std::endl;
+            change_contrast(matrix, contrast);
+            break;
+        case 'g':
+            std::cout << "Making the image gray." << std::endl;
+            make_image_gray(matrix);
             break;
         case 's':
             std::cout << "Showing the image." << std::endl;
