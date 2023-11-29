@@ -12,7 +12,11 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../build)
 
-add_executable(52 main.cpp)
+add_executable(52 
+            main.cpp
+            dataloader/dataLoader.cpp
+            filters/filters.cpp
+            )
 
 target_link_libraries(52 ${OpenCV_LIBS})
 
