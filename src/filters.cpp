@@ -78,7 +78,7 @@ void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix)
     }
 }
 
-void write_img(vector<vector<vector<int>>> &matrix, string saveimage)
+void write_img(std::vector<std::vector<std::vector<int>>> &matrix, std::string saveimage)
 {
     cv::Mat new_image = convertMatrixToMat(matrix);
     cv::imwrite(saveimage, new_image);
