@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     // Convert the image to a matrix
     std::vector<std::vector<std::vector<int>>> matrix = convertMatToMatrix(image);
 
-    string save_image;
+    std::string save_image;
 
     char input;
     while (true)
@@ -62,21 +62,21 @@ int main(int argc, char **argv)
         case 'j':
             std::cout << "New Image Name: ";
             std::cin >> save_image;
-            std::cout << endl;
+            std::cout << std::endl;
             write_img(matrix, save_image);
             break;
         case 'f':
             int kernelSize;
             std::cout << "kernel size (3 or 5): " ;
             std::cin >> kernelSize;
-            std::cout << endl;
+            std::cout << std::endl;
             gaussian(matrix,kernelSize);
             break;
         case 'q':
             std::cout << "Quitting." << std::endl;
             return 0;
         default:
-            std::cout << "Unknown command" << endl;
+            std::cout << "Unknown command" << std::endl;
             break;
         }
     }
