@@ -1,8 +1,9 @@
-#include "dataloader/dataLoader.h"
-#include "filters/filters.h"
+#include "dataLoader.h"
+#include "filters.h"
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+
 
 int main(int argc, char **argv)
 {
@@ -12,6 +13,8 @@ int main(int argc, char **argv)
     // Convert the image to a matrix
     std::vector<std::vector<std::vector<int>>> matrix = convertMatToMatrix(image);
 
+    string save_image;
+
     char input;
     while (true)
     {
@@ -20,7 +23,9 @@ int main(int argc, char **argv)
         std::cout << "b: Change the brightness of the image" << std::endl;
         std::cout << "c: Change the contrast of the image" << std::endl;
         std::cout << "g: Make the image gray" << std::endl;
+        std::cout << "f: Gaussian filter" << std::endl;
         std::cout << "s: Show the image" << std::endl;
+        std::cout << "j: Save image" << std::endl;
         std::cout << "q: Quit" << std::endl;
         std::cin >> input;
         switch (input)
@@ -54,9 +59,24 @@ int main(int argc, char **argv)
             cv::imshow("Display Image", image);
             cv::waitKey(0);
             break;
-        default:
+        case 'j':
+            std::cout << "New Image Name: ";
+            std::cin >> save_image;
+            std::cout << endl;
+            write_img(matrix, save_image);
+            break;
+        case 'f':
+            int kernelSize;
+            std::cout << "kernel size (3 or 5): " ;
+            std::cin >> kernelSize;
+            std::cout << endl;
+            gaussian(matrix,kernelSize);
+            break;
+        case 'q':
             std::cout << "Quitting." << std::endl;
             return 0;
+        default:
+            std::cout << "Unknown command" << endl;
             break;
         }
     }
