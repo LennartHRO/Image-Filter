@@ -2,7 +2,6 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 
-using namespace std;
 
 void change_brightness(std::vector<std::vector<std::vector<int>>> &matrix, int brightness);
 
@@ -12,7 +11,7 @@ void change_contrast(std::vector<std::vector<std::vector<int>>> &matrix, float c
 
 void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix);
 
-void write_img(vector<vector<vector<int>>> &matrix, string saveimage);
+void write_img(std::vector<std::vector<std::vector<int>>> &matrix, std::string saveimage);
 
 void convolution(std::vector<std::vector<std::vector<int>>> &matrix, const std::vector<std::vector<int>> &kernel, const int kernel_factor);
 
