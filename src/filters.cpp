@@ -1,10 +1,7 @@
 #include "filters.h"
-#include "dataloader.h"
 
 #include <vector>
-#include <opencv2/opencv.hpp>
 #include <iostream>
-
 
 void change_brightness(std::vector<std::vector<std::vector<int>>> &matrix, int brightness)
 {
@@ -78,13 +75,6 @@ void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix)
     }
 }
 
-void write_img(std::vector<std::vector<std::vector<int>>> &matrix, std::string saveimage)
-{
-    cv::Mat new_image = convertMatrixToMat(matrix);
-    cv::imwrite(saveimage, new_image);
-    cv::waitKey();
-}
-
 void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kernelSize)
 {
     std::vector<std::vector<int>> kernel;
@@ -117,25 +107,25 @@ void convolution(std::vector<std::vector<std::vector<int>>> &matrix, const std::
     int n = matrix[0].size();
     int d = matrix[0][0].size();
 
-    //edge needed to avoid border
+    // edge needed to avoid border
     int edge = kernel.size() / 2;
-    //matrix rows
+    // matrix rows
     for (int i = edge; i < m - edge; ++i)
     {
-        //matrix columns
+        // matrix columns
         for (int j = edge; j < n - edge; ++j)
         {
-            //matrix depth
+            // matrix depth
             for (int k = 0; k < d; ++k)
             {
                 int sum_pixel = 0;
-                //kernel rows
+                // kernel rows
                 for (int ki = -edge; ki <= edge; ++ki)
                 {
-                    //kernel columns
+                    // kernel columns
                     for (int kj = -edge; kj <= edge; ++kj)
                     {
-                        //convolution
+                        // convolution
                         sum_pixel = sum_pixel + matrix[i - ki][j - kj][k] * kernel[ki + edge][kj + edge];
                     }
                 }

@@ -15,3 +15,8 @@ std::vector<std::vector<std::vector<int>>> convertMatToMatrix(const cv::Mat &ima
 // Input: Tensor: Rows x Cols x Channels (RGB)
 // Output: cv::M
 cv::Mat convertMatrixToMat(const std::vector<std::vector<std::vector<int>>> &matrix);
+
+// Function to write an image to a file
+// Input: Tensor: Rows x Cols x Channels (RGB)
+// Output: -
+void write_img(std::vector<std::vector<std::vector<int>>> &matrix, std::string saveimage);
