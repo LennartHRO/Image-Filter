@@ -80,7 +80,7 @@ void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kern
 {
     std::vector<std::vector<int>> kernel;
     int kernel_factor = 0;
-    float std_dev = kernelSize / (2 * M_PI);
+    float std_dev = kernelSize / (2.0 * 3.14);
     int kernel_value = 0;
 
     for (int i = -kernelSize / 2; i <= kernelSize / 2; ++i)
