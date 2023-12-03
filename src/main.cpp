@@ -66,9 +66,10 @@ int main(int argc, char **argv)
             break;
 
         case 'j':
-            std::cout << "New Image Name: ";
+            std::cout << "New Image Name (with file ending (e.g. .jpg)): ";
             std::cin >> save_image;
             std::cout << std::endl;
+            std ::cout << "Saving the image." << std::endl;
             write_img(matrix, save_image);
             break;
 
