@@ -75,7 +75,16 @@ int main(int argc, char **argv)
             std::cout << "kernel size (3 or 5): ";
             std::cin >> kernelSize;
             std::cout << std::endl;
-            gaussian(matrix, kernelSize);
+            mod_gaussian(matrix, kernelSize);
+            break;
+
+        case 'e':
+            edge_detection(matrix);
+            break;
+
+        case 'x':
+            std::cout << "Sharpen" << std::endl;
+            sharpen(matrix);
             break;
 
         case 'q':
