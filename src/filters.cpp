@@ -79,32 +79,6 @@ void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix)
 void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kernelSize)
 {
     std::vector<std::vector<int>> kernel;
-    int kernel_factor;
-    if (kernelSize == 3)
-    {
-        kernel = {
-            {1, 2, 1},
-            {2, 4, 2},
-            {1, 2, 1}};
-        kernel_factor = 16;
-    }
-    else if (kernelSize == 5)
-    {
-        kernel = {
-            {1, 4, 6, 4, 1},
-            {4, 16, 24, 16, 4},
-            {6, 24, 36, 24, 6},
-            {4, 16, 24, 16, 4},
-            {1, 4, 6, 4, 1}};
-        kernel_factor = 256;
-    }
-
-    convolution(matrix, kernel, kernel_factor);
-}
-
-void mod_gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kernelSize)
-{
-    std::vector<std::vector<int>> kernel;
     int kernel_factor = 0;
     float std_dev = kernelSize / (2 * M_PI);
     int kernel_value = 0;
@@ -122,8 +96,6 @@ void mod_gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int 
         }
         kernel.push_back(row);
     }
-
-    std::cout << "kernel_factor : " << kernel_factor << std::endl;
 
     // print kernel
     for (int i = 0; i < kernelSize; ++i)
@@ -157,11 +129,11 @@ void sharpen(std::vector<std::vector<std::vector<int>>> &matrix)
         {-1, 5, -1},
         {0, -1, 0}};*/
     kernel = {
-        {1, 4, 6, 4, 1},
-        {4, 16, 24, 16, 4},
-        {6, 24, -476, 24, 6},
-        {4, 16, 24, 16, 4},
-        {1, 4, 6, 4, 1}};
+        {-1, -4, -6, -4, -1},
+        {-4, -16, -24, -16, -4},
+        {-6, -24, 476, -24, -6},
+        {-4, -16, -24, -16, -4},
+        {-1, -4, -6, -4, -1}};
 
     convolution(matrix, kernel, 256);
 }
@@ -212,11 +184,6 @@ void convolution(std::vector<std::vector<std::vector<int>>> &matrix, const std::
     std::vector<std::vector<std::vector<int>>> pad_matrix = padding(matrix, kernel.size());
 
     int edge = kernel.size() - 1;
-    std::cout << "edge : " << edge << std::endl;
-    int i = 20;
-    int j = 30;
-    int k = 0;
-    int sum_pixel = 0;
 
     int kernelOffset = kernel.size() / 2;
 
