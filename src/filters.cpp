@@ -85,11 +85,9 @@ void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kern
 
     for (int i = -kernelSize / 2; i <= kernelSize / 2; ++i)
     {
-        std::cout << "i : " << i << std::endl;
         std::vector<int> row;
         for (int j = -kernelSize / 2; j <= kernelSize / 2; ++j)
         {
-            std::cout << "j : " << j << std::endl;
             kernel_value = 100 * std::exp(-(std::pow(i, 2) + std::pow(j, 2)) / (2.0 * std::pow(std_dev, 2))); // 1.0 / (2.0 * M_PI * std::pow(std_dev, 2))
             kernel_factor += kernel_value;
             row.push_back(kernel_value);
@@ -98,6 +96,7 @@ void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kern
     }
 
     // print kernel
+    /*
     for (int i = 0; i < kernelSize; ++i)
     {
         for (int j = 0; j < kernelSize; ++j)
@@ -105,7 +104,7 @@ void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kern
             std::cout << kernel[i][j] << " ";
         }
         std::cout << std::endl;
-    }
+    }*/
 
     convolution(matrix, kernel, kernel_factor);
 }
