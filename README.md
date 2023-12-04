@@ -46,7 +46,9 @@ Then run the software with the following command:
 
 An alternative to execute the program in VSC is configuring the project by using the shortcut Ctrl + Shift + P and then searching for the command "CMake: Configure". After selecting the compiler "Visual Studio Build Tools XXXX Release - x86_amd64" a new build folder will be created as well as a button "build" on the bottom bar on the left (or Ctrl+Shift+P "CMake: Build"). After building the project the 52.exe file will be created in the Debug folder inside the build folder. So you can run the software with the following command:
 
-``` ./build/Debug/52.exe  ./Examples/"Name of your image file"
+``` bash
+ ./build/Debug/52.exe  ./Examples/"Name of your image file"
+```
 
 Those steps are also explained in this video: https://youtube.com/watch?v=m9HBM1m_EMU
 
