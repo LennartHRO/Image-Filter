@@ -72,6 +72,8 @@ Now you have to type a charcter to apply the respective filte to the image. foll
 - **Quit (q):** Exits the program.
 If the selected filter needs some additional information it will ask you to enter them. After the filter has succesfully be applied, you are able to apply another filter. To exit the program type ``q``.
 
+Under this Link you can find a demo: <https://www.loom.com/share/c9f261ffe2b64b16a7a6aaefec6a565d?sid=50122a95-986f-4302-91a6-c862d9a17669> .
+
 ## Filter
 
 ### Change Brightness
@@ -142,6 +144,8 @@ The Fuzzy or Gaussian filter applies a convolution operation using a kernel to s
     <td><img src="Examples/0_fuzzy21.jpg" alt="kernel size = 21" width="400"/></td>
   </tr>
 </table>
+
+You can find a good explanation of the gaussian filter in this video: <https://youtu.be/-LD9MxBUFQo?si=P5Uy1HH7WalOFtLM>.
 
 
 
