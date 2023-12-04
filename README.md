@@ -2,16 +2,19 @@
 This C++ program allows you to apply various image filters to an input picture. The supported filters include inversion, brightness adjustment, contrast adjustment, grayscale conversion, fuzzy/gaussian filter, edge detection and sharpening.
 ### Table of Contents
 
-- [52: Image Filter Program](#52-image-filter-program)
-  - [Prerequisites](#prerequisites)
-    - [Install OpenCV on Ubuntu/Linux](#install-opencv-on-ubuntulinux)
-    - [Install OpenCV on Windows](#install-opencv-on-windows)
-  - [Getting Started](#getting-started)
-    - [Run the Software](#run-the-software)
-    - [First Steps](#first-steps)
-  - [Filter](#filter)
-
-
+- [Prerequisites](#prerequisites)
+  - [Install OpenCV on Ubuntu/Linux](#install-opencv-on-ubuntulinux)
+  - [Install OpenCV on Windows](#install-opencv-on-windows)
+- [Getting Started](#getting-started)
+  - [Run the software with cmake & make (tested on Ubuntu/Linux)](#run-the-software-with-cmake--make--tested-on-ubuntulinux)
+  - [Run the software in VSC on Windows](#run-the-software-in-vsc-on-windows)
+  - [First steps](#first-steps)
+- [Filter](#filter)
+  - [Change Brightness](#change-brightness)
+  - [Change Contrast](#change-contrast)
+  - [Invert Image](#invert-image)
+  - [Gray Image](#gray-image)
+  - [Fuzzy (Gaussian) Filter](#fuzzy-gaussian-filter)
 
 ## Prerequisites
 
@@ -30,7 +33,8 @@ Follow the instructions on the [OpenCV official website](https://docs.opencv.org
 
 ## Getting started
 
-### Run the software
+### Run the software with cmake & make 
+_(testet on Ubuntu/Linux)_
 
 First navigate into the project folder where the Cmake file is located. Here run the follwig lines in the terminal to buid an executable file:
 
@@ -43,6 +47,8 @@ Then run the software with the following command:
 ``` bash
 ./52 <name (and location) of your image file>
 ```
+
+### Run the software in VSC on Windows
 
 An alternative to execute the program in VSC is configuring the project by using the shortcut Ctrl + Shift + P and then searching for the command "CMake: Configure". After selecting the compiler "Visual Studio Build Tools XXXX Release - x86_amd64" a new build folder will be created as well as a button "build" on the bottom bar on the left (or Ctrl+Shift+P "CMake: Build"). After building the project the 52.exe file will be created in the Debug folder inside the build folder. So you can run the software with the following command:
 
@@ -61,14 +67,12 @@ Now you have to type a charcter to apply the respective filte to the image. foll
 - **Contrast (c):** Adjusts the contrast of the image.
 - **Grayscale (g):** Converts the image to grayscale.
 - **Fuzzy/Gaussian Filter (f):** Applies a fuzzy/Gaussian filter to the image.
-- **Edge Detection (e):** Performs edge detection on the image.
-- **Sharpen (x):** Sharpens the image.
 - **Show (s):** Displays the current state of the image.
 - **Save (j):** Saves the current image with a new name.
 - **Quit (q):** Exits the program.
 If the selected filter needs some additional information it will ask you to enter them. After the filter has succesfully be applied, you are able to apply another filter. To exit the program type ``q``.
 
-## Filer
+## Filter
 
 ### Change Brightness
 This filter adjusts the overall brightness of the image. Positive values increase brightness, while negative values decrease it.

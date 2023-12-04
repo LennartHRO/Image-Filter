@@ -94,18 +94,6 @@ void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kern
         }
         kernel.push_back(row);
     }
-
-    // print kernel
-    /*
-    for (int i = 0; i < kernelSize; ++i)
-    {
-        for (int j = 0; j < kernelSize; ++j)
-        {
-            std::cout << kernel[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }*/
-
     convolution(matrix, kernel, kernel_factor);
 }
 
@@ -123,10 +111,6 @@ void edge_detection(std::vector<std::vector<std::vector<int>>> &matrix)
 void sharpen(std::vector<std::vector<std::vector<int>>> &matrix)
 {
     std::vector<std::vector<int>> kernel;
-    /*kernel = {
-        {0, -1, 0},
-        {-1, 5, -1},
-        {0, -1, 0}};*/
     kernel = {
         {-1, -4, -6, -4, -1},
         {-4, -16, -24, -16, -4},

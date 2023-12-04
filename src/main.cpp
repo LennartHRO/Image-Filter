@@ -23,8 +23,8 @@ int main(int argc, char **argv)
         std::cout << "c: Change the contrast of the image" << std::endl;
         std::cout << "g: Make the image gray" << std::endl;
         std::cout << "f: Fuzzy/Gaussian filter" << std::endl;
-        std::cout << "e: Edge detection" << std::endl;
-        std::cout << "x: Sharpen" << std::endl;
+       // std::cout << "e: Edge detection" << std::endl;
+       // std::cout << "x: Sharpen" << std::endl;
         std::cout << "s: Show the image" << std::endl;
         std::cout << "j: Save image" << std::endl;
         std::cout << "q: Quit" << std::endl;
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
         case 'f':
             int kernelSize;
-            std::cout << "kernel size (3 or 5): ";
+            std::cout << "Kernel size: ";
             std::cin >> kernelSize;
             std::cout << std::endl;
             gaussian(matrix, kernelSize);
