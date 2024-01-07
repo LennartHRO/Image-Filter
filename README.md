@@ -1,92 +1,151 @@
-# 52
+# 52: Image Filter Program
+This C++ program allows you to apply various image filters to an input picture. The supported filters include inversion, brightness adjustment, contrast adjustment, grayscale conversion, fuzzy/gaussian filter, edge detection and sharpening.
+### Table of Contents
 
+- [Prerequisites](#prerequisites)
+  - [Install OpenCV on Ubuntu/Linux](#install-opencv-on-ubuntulinux)
+  - [Install OpenCV on Windows](#install-opencv-on-windows)
+- [Getting Started](#getting-started)
+  - [Run the software with cmake & make (tested on Ubuntu/Linux)](#run-the-software-with-cmake--make--tested-on-ubuntulinux)
+  - [Run the software in VSC on Windows](#run-the-software-in-vsc-on-windows)
+  - [First steps](#first-steps)
+- [Filter](#filter)
+  - [Change Brightness](#change-brightness)
+  - [Change Contrast](#change-contrast)
+  - [Invert Image](#invert-image)
+  - [Gray Image](#gray-image)
+  - [Fuzzy (Gaussian) Filter](#fuzzy-gaussian-filter)
+
+## Prerequisites
+
+Before running the program, ensure that you have OpenCV installed on your system. Even thoug the software not uses OpenCV to convert the images, we need OpenCV to load and to display the images. Follow the instructions below to install OpenCV.
+
+### Install OpenCV on Ubuntu/Linux
+
+``` bash
+sudo apt-get update
+sudo apt-get install libopencv-dev
+```
+
+### Install OpenCV on Windows
+Follow the instructions on the [OpenCV official website](https://docs.opencv.org/master/d3/d52/tutorial_windows_install.html)
 
 
 ## Getting started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### Run the software with cmake & make 
+_(testet on Ubuntu/Linux)_
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+First navigate into the project folder where the Cmake file is located. Here run the follwig lines in the terminal to buid an executable file:
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+``` bash
+cmake .
+make
 ```
-cd existing_repo
-git remote add origin https://gitlab.lrz.de/advprog2023/52.git
-git branch -M main
-git push -uf origin main
+Then run the software with the following command:
+
+``` bash
+./52 <name (and location) of your image file>
 ```
 
-## Integrate with your tools
+### Run the software in VSC on Windows
 
-- [ ] [Set up project integrations](https://gitlab.lrz.de/advprog2023/52/-/settings/integrations)
+An alternative to execute the program in VSC is configuring the project by using the shortcut Ctrl + Shift + P and then searching for the command "CMake: Configure". After selecting the compiler "Visual Studio Build Tools XXXX Release - x86_amd64" a new build folder will be created as well as a button "build" on the bottom bar on the left (or Ctrl+Shift+P "CMake: Build"). After building the project the 52.exe file will be created in the Debug folder inside the build folder. So you can run the software with the following command:
 
-## Collaborate with your team
+``` bash
+ ./build/Debug/52.exe  ./Examples/"Name of your image file"
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Those steps are also explained in this video: https://youtube.com/watch?v=m9HBM1m_EMU
 
-## Test and Deploy
+### First steps
 
-Use the built-in continuous integration in GitLab.
+Now you have to type a charcter to apply the respective filte to the image. following options are allowed:
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- **Invert (i):** Inverts the colors of the image.
+- **Brightness (b):** Adjusts the brightness of the image.
+- **Contrast (c):** Adjusts the contrast of the image.
+- **Grayscale (g):** Converts the image to grayscale.
+- **Fuzzy/Gaussian Filter (f):** Applies a fuzzy/Gaussian filter to the image.
+- **Show (s):** Displays the current state of the image.
+- **Save (j):** Saves the current image with a new name.
+- **Quit (q):** Exits the program.
+If the selected filter needs some additional information it will ask you to enter them. After the filter has succesfully be applied, you are able to apply another filter. To exit the program type ``q``.
 
-***
+Under this Link you can find a demo: <https://www.loom.com/share/c9f261ffe2b64b16a7a6aaefec6a565d?sid=50122a95-986f-4302-91a6-c862d9a17669> .
 
-# Editing this README
+## Filter
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Change Brightness
+This filter adjusts the overall brightness of the image. Positive values increase brightness, while negative values decrease it.
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Brightness = 100</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_brightness100.jpg" alt="Brightness = 100" width="400"/></td>
+  </tr>
+</table>
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Change Contrast
+Higher contrast values enhance the distinction, while lower values reduce it.
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Contrast = 2</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_contrast2.jpg" alt="Contrast = 2" width="400"/></td>
+  </tr>
+</table>
 
-## Name
-Choose a self-explaining name for your project.
+### Invert Image
+The inversion filter transforms the colors of the image by replacing each color value with its opposite on the color scale. This results in a negative-like effect.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Edited Image</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_inverted.jpg" alt="Edited Image" width="400"/></td>
+  </tr>
+</table>
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Gray Image
+The grayscale filter converts the image to shades of gray, removing color information. 
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Edited Image</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_gray.jpg" alt="Edited Image" width="400"/></td>
+  </tr>
+</table>
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Fuzzy (Gaussian) Filter
+The Fuzzy or Gaussian filter applies a convolution operation using a kernel to smooth the image. This can reduce noise and blur details. The kernel size determines the extent of blurring, with larger sizes producing more pronounced effects. The examples show the impact of different kernel sizes.
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Kernel size = 5</td>
+    <td>Kernel size = 21</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_fuzzy5.jpg" alt="kernel size = 5" width="400"/></td>
+    <td><img src="Examples/0_fuzzy21.jpg" alt="kernel size = 21" width="400"/></td>
+  </tr>
+</table>
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+You can find a good explanation of the gaussian filter in this video: <https://youtu.be/-LD9MxBUFQo?si=P5Uy1HH7WalOFtLM>.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
