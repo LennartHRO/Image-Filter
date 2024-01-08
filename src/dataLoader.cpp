@@ -1,10 +1,49 @@
-#include <vector>
 #include <opencv2/opencv.hpp>
-#include <iostream>
 
 #include "dataLoader.h"
+#include "image.h"
 
+Image DataLoader::convertMatToImage(const cv::Mat &matImage)
+{
+    std::vector<std::vector<std::vector<int>>> imageData;
 
+    for (int y = 0; y < matImage.rows; ++y)
+    {
+        std::vector<std::vector<int>> row;
+        for (int x = 0; x < matImage.cols; ++x)
+        {
+            std::vector<int> pixel;
+            cv::Vec3b color = matImage.at<cv::Vec3b>(y, x);
+            // OpenCV uses BGR format by default
+            pixel.push_back(color[2]); // Red
+            pixel.push_back(color[1]); // Green
+            pixel.push_back(color[0]); // Blue
+            row.push_back(pixel);
+        }
+        imageData.push_back(row);
+    }
+
+    return Image(imageData);
+}
+
+Image DataLoader::loadImage(int argc, char **argv)
+{
+    if (argc < 2)
+    {
+        throw std::runtime_error("Not enough arguments. Please provide an image path.");
+    }
+
+    cv::Mat image = cv::imread(argv[1], cv::IMREAD_COLOR);
+    if (image.empty())
+    {
+        throw std::runtime_error("Could not open or find the image.");
+    }
+
+    return convertMatToImage(image);
+}
+
+/*
+--------- OLD DATALOADER FUNCTION: ---------
 cv::Mat read_image_file(int argc, char **argv)
 {
     // Check if the image file path is provided
@@ -88,3 +127,4 @@ void write_img(std::vector<std::vector<std::vector<int>>> &matrix, std::string s
     cv::imwrite(saveimage, new_image);
     cv::waitKey();
 }
+*/

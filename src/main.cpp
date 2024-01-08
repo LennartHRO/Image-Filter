@@ -1,8 +1,19 @@
 #include "dataLoader.h"
 #include "filters.h"
+#include "image.h"
 #include <vector>
 #include <opencv2/opencv.hpp>
 #include <iostream>
+
+int main(int argc, char **argv)
+{
+    DataLoader dataLoader;
+    Image image = dataLoader::loadImage(argc, argv);
+    return 0;
+}
+
+/*
+----------- OLD MAIN FUNCTION: ------------
 
 int main(int argc, char **argv)
 {
@@ -103,3 +114,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+*/
