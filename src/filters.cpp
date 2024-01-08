@@ -4,6 +4,30 @@
 #include <iostream>
 #include <cmath>
 
+void InvertFilter::apply(Image &image)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            for (int k = 0; k < matrix[0][0].size(); ++k)
+            {
+                matrix[i][j][k] = 255 - matrix[i][j][k];
+            }
+        }
+    }
+    image.setImageData(matrix);
+}
+
+/* ---------- OLD FILTER ----------
+
+#include "filters.h"
+
+#include <vector>
+#include <iostream>
+#include <cmath>
+
 void change_brightness(std::vector<std::vector<std::vector<int>>> &matrix, int brightness)
 {
     for (int i = 0; i < matrix.size(); ++i)
@@ -197,3 +221,4 @@ void convolution(std::vector<std::vector<std::vector<int>>> &matrix, const std::
 
     matrix = new_matrix;
 }
+*/

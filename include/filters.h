@@ -1,3 +1,16 @@
+#include "image.h"
+
+class Filter {
+    public:
+        virtual void apply(Image &image) = 0;
+};
+
+class InvertFilter : public Filter {
+    public:
+        void apply(Image &image) override;
+};
+
+/* ---------- OLD FILTER ----------
 #include <vector>
 #include <iostream>
 
@@ -27,3 +40,5 @@ void edge_detection(std::vector<std::vector<std::vector<int>>> &matrix);
 
 // Function to perform sharpening
 void sharpen(std::vector<std::vector<std::vector<int>>> &matrix);
+
+*/

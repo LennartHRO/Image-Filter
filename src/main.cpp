@@ -8,7 +8,10 @@
 int main(int argc, char **argv)
 {
     DataLoader dataLoader;
-    Image image = dataLoader::loadImage(argc, argv);
+    Image image = dataLoader.loadImage(argc, argv);
+    InvertFilter invertFilter;
+    invertFilter.apply(image);
+    image.showImage();
     return 0;
 }
 

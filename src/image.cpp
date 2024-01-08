@@ -6,7 +6,7 @@ Image::Image(std::vector<std::vector<std::vector<int>>> imageData) : _imageData(
 {
 }
 
-cv::Mat Image::convertImageDataToMat()
+cv::Mat Image::convertImageDataToMat() const
 {
     // Check if the input matrix is empty
     if (_imageData.empty() || _imageData[0].empty() || _imageData[0][0].empty())
@@ -23,7 +23,7 @@ cv::Mat Image::convertImageDataToMat()
     {
         for (int j = 0; j < _imageData[0].size(); ++j)
         {
-            cv::Vec3b &color = _imageData.at<cv::Vec3b>(i, j);
+            cv::Vec3b &color = image.at<cv::Vec3b>(i, j);
             color[0] = static_cast<uchar>(_imageData[i][j][0]); // Blue
             color[1] = static_cast<uchar>(_imageData[i][j][1]); // Green
             color[2] = static_cast<uchar>(_imageData[i][j][2]); // Red
@@ -44,4 +44,14 @@ void Image::saveImage() const
 {
     cv::Mat image = convertImageDataToMat();
     cv::imwrite("image.jpg", image);
+}
+
+std::vector<std::vector<std::vector<int>>> Image::getImageData() const
+{
+    return _imageData;
+}
+
+void Image::setImageData(std::vector<std::vector<std::vector<int>>> imageData)
+{
+    _imageData = imageData;
 }

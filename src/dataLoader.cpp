@@ -1,5 +1,7 @@
-#include <opencv2/opencv.hpp>
+#ifndef DATALOADER_H
+#define DATALOADER_H
 
+#include <opencv2/opencv.hpp>
 #include "dataLoader.h"
 #include "image.h"
 
@@ -41,6 +43,8 @@ Image DataLoader::loadImage(int argc, char **argv)
 
     return convertMatToImage(image);
 }
+
+#endif
 
 /*
 --------- OLD DATALOADER FUNCTION: ---------
