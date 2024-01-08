@@ -10,6 +10,21 @@ class InvertFilter : public Filter {
         void apply(Image &image) override;
 };
 
+class BrightnessFilter : public Filter {
+    public:
+        void apply(Image &image) override;
+};
+
+class ContrastFilter : public Filter {
+    public:
+        void apply(Image &image) override;
+};
+
+class GrayFilter : public Filter {
+    public:
+        void apply(Image &image) override;
+};
+
 /* ---------- OLD FILTER ----------
 #include <vector>
 #include <iostream>

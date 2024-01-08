@@ -9,9 +9,54 @@ int main(int argc, char **argv)
 {
     DataLoader dataLoader;
     Image image = dataLoader.loadImage(argc, argv);
-    InvertFilter invertFilter;
-    invertFilter.apply(image);
-    image.showImage();
+
+    char input;
+    std::unique_ptr<Filter> filter;
+    while (true)
+    {
+        std::cout << "Enter the operation to perform on the image:" << std::endl;
+        std::cout << "i: Invert the image" << std::endl;
+        std::cout << "b: Change the brightness of the image" << std::endl;
+        std::cout << "c: Change the contrast of the image" << std::endl;
+        std::cout << "g: Make the image gray" << std::endl;
+        std::cout << "q: Quit" << std::endl;
+        std::cin >> input;
+        switch (input)
+        {
+        case 'i':
+            std::cout << "Inverting the image." << std::endl;
+            filter = std::make_unique<InvertFilter>();
+            filter->apply(image);
+            break;
+
+        case 'b':
+            std::cout << "Changing the brightness of the image." << std::endl;
+            filter = std::make_unique<BrightnessFilter>();
+            filter->apply(image);
+            break;
+
+        case 'c':
+            std::cout << "Changing the contrast of the image." << std::endl;
+            filter = std::make_unique<ContrastFilter>();
+            filter->apply(image);
+            break;
+
+        case 'g':
+            std::cout << "Making the image gray." << std::endl;
+            filter = std::make_unique<GrayFilter>();
+            filter->apply(image);
+            break;
+
+        case 'q':
+            std::cout << "Quitting." << std::endl;
+            return 0;
+
+        default:
+            std::cout << "Unknown command" << std::endl;
+            break;
+        }
+        image.showImage();
+    }
     return 0;
 }
 

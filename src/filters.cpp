@@ -20,6 +20,79 @@ void InvertFilter::apply(Image &image)
     image.setImageData(matrix);
 }
 
+
+void BrightnessFilter::apply(Image &image)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
+    int brightness;
+    std::cout << "Enter the brightness value: ";
+    std::cin >> brightness;
+    std::cout << "Changing the brightness of the image by " << brightness << std::endl;
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            for (int k = 0; k < matrix[0][0].size(); ++k)
+            {
+                matrix[i][j][k] += brightness;
+                if (matrix[i][j][k] > 255)
+                {
+                    matrix[i][j][k] = 255;
+                }
+                else if (matrix[i][j][k] < 0)
+                {
+                    matrix[i][j][k] = 0;
+                }
+            }
+        }
+    }
+    image.setImageData(matrix);
+}
+
+void ContrastFilter::apply(Image &image)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
+    float contrast;
+    std::cout << "Enter the contrast value: ";
+    std::cin >> contrast;
+    std::cout << "Changing the contrast of the image by " << contrast << std::endl;
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            for (int k = 0; k < matrix[0][0].size(); ++k)
+            {
+                matrix[i][j][k] *= contrast;
+                if (matrix[i][j][k] > 255)
+                {
+                    matrix[i][j][k] = 255;
+                }
+                else if (matrix[i][j][k] < 0)
+                {
+                    matrix[i][j][k] = 0;
+                }
+            }
+        }
+    }
+    image.setImageData(matrix);
+}
+
+void GrayFilter::apply(Image &image)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            int gray = 0.3 * matrix[i][j][0] + 0.6 * matrix[i][j][1] + 0.1 * matrix[i][j][2];
+            matrix[i][j][0] = gray;
+            matrix[i][j][1] = gray;
+            matrix[i][j][2] = gray;
+        }
+    }
+    image.setImageData(matrix);
+}
+
 /* ---------- OLD FILTER ----------
 
 #include "filters.h"
