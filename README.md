@@ -173,7 +173,7 @@ The Super Filter makes it possible to combine and execute the above-mentioned fi
   <tr>
     <td>Original Image</td>
     <td>Inverted & Fuzzy</td>
-    <td>Gray & Box Blu</td>
+    <td>Gray & Box Blur</td>
   </tr>
   <tr>
     <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
