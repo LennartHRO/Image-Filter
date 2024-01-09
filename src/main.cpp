@@ -19,6 +19,7 @@ int main(int argc, char **argv)
         std::cout << "b: Change the brightness of the image" << std::endl;
         std::cout << "c: Change the contrast of the image" << std::endl;
         std::cout << "g: Make the image gray" << std::endl;
+        std::cout << "f: Fuzzy/Gaussian filter" << std::endl;
         std::cout << "q: Quit" << std::endl;
         std::cin >> input;
         switch (input)
@@ -44,6 +45,12 @@ int main(int argc, char **argv)
         case 'g':
             std::cout << "Making the image gray." << std::endl;
             filter = std::make_unique<GrayFilter>();
+            filter->apply(image);
+            break;
+        
+        case 'f':
+            std::cout << "Fuzzy/Gaussian filter" << std::endl;
+            filter = std::make_unique<GaussianFilter>();
             filter->apply(image);
             break;
 

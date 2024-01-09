@@ -25,6 +25,20 @@ class GrayFilter : public Filter {
         void apply(Image &image) override;
 };
 
+class ConvolutionFilter : public Filter {
+    private:
+        void pad(Image &image, const int kernelSize);
+    protected:
+        void convolve(Image &image, const std::vector<std::vector<int>> &kernel, const int kernel_factor);
+    public:
+        virtual void apply(Image &image) = 0;
+};
+
+class GaussianFilter : public ConvolutionFilter {
+    public:
+        void apply(Image &image) override;
+};
+
 /* ---------- OLD FILTER ----------
 #include <vector>
 #include <iostream>

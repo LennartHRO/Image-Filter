@@ -20,7 +20,6 @@ void InvertFilter::apply(Image &image)
     image.setImageData(matrix);
 }
 
-
 void BrightnessFilter::apply(Image &image)
 {
     std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
@@ -91,6 +90,115 @@ void GrayFilter::apply(Image &image)
         }
     }
     image.setImageData(matrix);
+}
+
+void ConvolutionFilter::pad(Image &image, const int kernelSize)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
+
+    int n = matrix.size();
+    int m = matrix[0].size();
+    int d = matrix[0][0].size();
+
+    int edge = kernelSize - 1;
+
+    std::vector<std::vector<std::vector<int>>> pad_matrix;
+
+    // initialize pad_matrix with zeros
+    for (int i = 0; i < n + 2 * edge; ++i)
+    {
+        std::vector<std::vector<int>> row;
+        for (int j = 0; j < m + 2 * edge; ++j)
+        {
+            std::vector<int> pixelValues = {0, 0, 0};
+            row.push_back(pixelValues);
+        }
+        pad_matrix.push_back(row);
+    }
+
+    // copy matrix to the middle of pad_matrix
+    // matrix rows
+    for (int i = 0; i < n; ++i)
+    {
+        // matrix columns
+        for (int j = 0; j < m; ++j)
+        {
+            pad_matrix[i + edge][j + edge] = matrix[i][j];
+        }
+    }
+
+    image.setImageData(pad_matrix);
+}
+
+void ConvolutionFilter::convolve(Image &image, const std::vector<std::vector<int>> &kernel, const int kernel_factor)
+{
+    std::vector<std::vector<std::vector<int>>> new_matrix = image.getImageData();
+
+    int m = new_matrix.size();
+    int n = new_matrix[0].size();
+    int d = new_matrix[0][0].size();
+
+    pad(image, kernel.size());
+    std::vector<std::vector<std::vector<int>>> pad_matrix = image.getImageData();
+
+    int edge = kernel.size() - 1;
+
+    int kernelOffset = kernel.size() / 2;
+
+    // matrix rows
+    for (int i = 0; i < m; ++i)
+    {
+        // matrix columns
+        for (int j = 0; j < n; ++j)
+        {
+            // matrix depth
+            for (int k = 0; k < d; ++k)
+            {
+                int sum_pixel = 0;
+                // kernel rows
+                for (int ki = -kernelOffset; ki <= kernelOffset; ++ki)
+                {
+                    // kernel columns
+                    for (int kj = -kernelOffset; kj <= kernelOffset; ++kj)
+                    {
+                        // convolution
+                        sum_pixel = sum_pixel + pad_matrix[edge + i - ki][edge + j - kj][k] * kernel[ki + (kernel.size() / 2)][kj + (kernel.size() / 2)];
+                    }
+                }
+                new_matrix[i][j][k] = sum_pixel / kernel_factor;
+            }
+        }
+    }
+
+    image.setImageData(new_matrix);
+}
+
+void GaussianFilter::apply(Image &image)
+{
+    std::vector<std::vector<int>> kernel;
+    int kernel_factor = 0;
+    int kernel_value = 0;
+
+    int kernelSize;
+    std::cout << "Kernel size: ";
+    std::cin >> kernelSize;
+    std::cout << std::endl;
+
+    float std_dev = kernelSize / (2.0 * 3.14);
+
+    for (int i = -kernelSize / 2; i <= kernelSize / 2; ++i)
+    {
+        std::vector<int> row;
+        for (int j = -kernelSize / 2; j <= kernelSize / 2; ++j)
+        {
+            kernel_value = 100 * std::exp(-(std::pow(i, 2) + std::pow(j, 2)) / (2.0 * std::pow(std_dev, 2))); // 1.0 / (2.0 * M_PI * std::pow(std_dev, 2))
+            kernel_factor += kernel_value;
+            row.push_back(kernel_value);
+        }
+        kernel.push_back(row);
+    }
+
+    convolve(image, kernel, kernel_factor);
 }
 
 /* ---------- OLD FILTER ----------
