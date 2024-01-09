@@ -15,6 +15,8 @@ This C++ program allows you to apply various image filters to an input picture. 
   - [Invert Image](#invert-image)
   - [Gray Image](#gray-image)
   - [Fuzzy (Gaussian) Filter](#fuzzy-gaussian-filter)
+  - [Box Blur](#box-blur)
+  - [Super Filter](#super-filter)
 
 ## Prerequisites
 
@@ -159,8 +161,24 @@ A Box linear filter (also known as a box blur) is a form of a low-pass ("blurrin
   </tr>
   <tr>
     <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
-    <td><img src="Examples/0_fuzzy5.jpg" alt="kernel size = 5" width="400"/></td>
-    <td><img src="Examples/0_fuzzy21.jpg" alt="kernel size = 21" width="400"/></td>
+    <td><img src="Examples/0_box5.jpg" alt="kernel size = 5" width="400"/></td>
+    <td><img src="Examples/0_box21.jpg" alt="kernel size = 21" width="400"/></td>
+  </tr>
+</table>
+
+### Super Filter
+The Super Filter makes it possible to combine and execute the above-mentioned filters in any combination. The examples show a combination of the inversion filter and the Fuzzy/Gaussian filter (kernel size = 5) and a combination of the grayscale filter and the Box linear filter (kernel size = 5).  
+
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Inverted & Fuzzy</td>
+    <td>Gray & Box Blu</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_super_inverted_fuzzy5.jpg" alt="inverted & fuzzy" width="400"/></td>
+    <td><img src="Examples/0_super_gray_box5.jpg" alt="gray & box" width="400"/></td>
   </tr>
 </table>
 
