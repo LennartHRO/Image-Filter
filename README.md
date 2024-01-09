@@ -67,8 +67,9 @@ Now you have to type a charcter to apply the respective filte to the image. foll
 - **Contrast (c):** Adjusts the contrast of the image.
 - **Grayscale (g):** Converts the image to grayscale.
 - **Fuzzy/Gaussian Filter (f):** Applies a fuzzy/Gaussian filter to the image.
-- **Show (s):** Displays the current state of the image.
-- **Save (j):** Saves the current image with a new name.
+- **Box Blur (l):** Applies a box linear filter to the image.
+- **Super Filter (x):** Provides the possibility of combining multiple filters together.
+- **Save (s):** Saves the current image with a new name.
 - **Quit (q):** Exits the program.
 If the selected filter needs some additional information it will ask you to enter them. After the filter has succesfully be applied, you are able to apply another filter. To exit the program type ``q``.
 
@@ -146,6 +147,24 @@ The Fuzzy or Gaussian filter applies a convolution operation using a kernel to s
 </table>
 
 You can find a good explanation of the gaussian filter in this video: <https://youtu.be/-LD9MxBUFQo?si=P5Uy1HH7WalOFtLM>.
+
+### Box Blur
+A Box linear filter (also known as a box blur) is a form of a low-pass ("blurring") filter in which the value of each pixel of the resulting image is equal to the average value of its neighboring pixels. Similar to the Fuzzy/Gaussian filter, the blurring effect increases with larger kernel sizes.
+
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Kernel size = 5</td>
+    <td>Kernel size = 21</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_fuzzy5.jpg" alt="kernel size = 5" width="400"/></td>
+    <td><img src="Examples/0_fuzzy21.jpg" alt="kernel size = 21" width="400"/></td>
+  </tr>
+</table>
+
+
 
 
 
