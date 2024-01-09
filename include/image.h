@@ -11,6 +11,7 @@ class Image
 private:
     // _imageData stores the image data in a 3D vector format.
     // Each pixel is represented by a vector of three integers (presumably RGB values).
+    // Format: Rows x Cols x Channels (RGB)
     std::vector<std::vector<std::vector<int>>> _imageData;
 
     // convertImageDataToMat is a private method that converts _imageData
@@ -20,7 +21,7 @@ private:
 
 public:
     // Constructor: Initializes an Image object with given image data.
-    // imageData: 3D vector representing the image data.
+    // imageData: 3D vector representing the image data. (Rows x Cols x Channels (RGB))
     Image(std::vector<std::vector<std::vector<int>>> imageData);
 
     // showImage displays the image in a window using OpenCV's imshow function.

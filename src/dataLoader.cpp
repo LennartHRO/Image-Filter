@@ -30,12 +30,16 @@ Image DataLoader::convertMatToImage(const cv::Mat &matImage)
 
 Image DataLoader::loadImage(int argc, char **argv)
 {
+    // Check if the image file path is provided
     if (argc < 2)
     {
         throw std::runtime_error("Not enough arguments. Please provide an image path.");
     }
 
+    // Read the image file
     cv::Mat image = cv::imread(argv[1], cv::IMREAD_COLOR);
+
+    // Check if the image file is empty
     if (image.empty())
     {
         throw std::runtime_error("Could not open or find the image.");

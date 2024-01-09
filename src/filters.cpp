@@ -4,6 +4,10 @@
 #include <iostream>
 #include <cmath>
 
+void Filter::configure()
+{
+}
+
 void InvertFilter::apply(Image &image)
 {
     std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
@@ -23,17 +27,13 @@ void InvertFilter::apply(Image &image)
 void BrightnessFilter::apply(Image &image)
 {
     std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
-    int brightness;
-    std::cout << "Enter the brightness value: ";
-    std::cin >> brightness;
-    std::cout << "Changing the brightness of the image by " << brightness << std::endl;
     for (int i = 0; i < matrix.size(); ++i)
     {
         for (int j = 0; j < matrix[0].size(); ++j)
         {
             for (int k = 0; k < matrix[0][0].size(); ++k)
             {
-                matrix[i][j][k] += brightness;
+                matrix[i][j][k] += _brightness;
                 if (matrix[i][j][k] > 255)
                 {
                     matrix[i][j][k] = 255;
@@ -48,20 +48,27 @@ void BrightnessFilter::apply(Image &image)
     image.setImageData(matrix);
 }
 
+void BrightnessFilter::configure()
+{
+    std::cout << "Please enter the brightness value(-100 is very dark, 100 is very bright): ";
+    std::cin >> _brightness;
+    std::cout << std::endl;
+}
+
+BrightnessFilter::BrightnessFilter() : _brightness(0)
+{
+}
+
 void ContrastFilter::apply(Image &image)
 {
     std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
-    float contrast;
-    std::cout << "Enter the contrast value: ";
-    std::cin >> contrast;
-    std::cout << "Changing the contrast of the image by " << contrast << std::endl;
     for (int i = 0; i < matrix.size(); ++i)
     {
         for (int j = 0; j < matrix[0].size(); ++j)
         {
             for (int k = 0; k < matrix[0][0].size(); ++k)
             {
-                matrix[i][j][k] *= contrast;
+                matrix[i][j][k] *= _contrast;
                 if (matrix[i][j][k] > 255)
                 {
                     matrix[i][j][k] = 255;
@@ -74,6 +81,24 @@ void ContrastFilter::apply(Image &image)
         }
     }
     image.setImageData(matrix);
+}
+
+void ContrastFilter::configure()
+{
+    do
+    {
+        std::cout << "Please enter the contrast value (0.5 is a very low and 2 is a very high contrast value): ";
+        std::cin >> _contrast;
+        if (_contrast <= 0 || _contrast > 10)
+        {
+            std::cout << "Contrast value must be between 0 and 10." << std::endl;
+        }
+    } while (_contrast <= 0 || _contrast > 10);
+    std::cout << std::endl;
+}
+
+ContrastFilter::ContrastFilter() : _contrast(0)
+{
 }
 
 void GrayFilter::apply(Image &image)
@@ -179,17 +204,12 @@ void GaussianFilter::apply(Image &image)
     int kernel_factor = 0;
     int kernel_value = 0;
 
-    int kernelSize;
-    std::cout << "Kernel size: ";
-    std::cin >> kernelSize;
-    std::cout << std::endl;
+    float std_dev = _kernelSize / (2.0 * 3.14);
 
-    float std_dev = kernelSize / (2.0 * 3.14);
-
-    for (int i = -kernelSize / 2; i <= kernelSize / 2; ++i)
+    for (int i = -_kernelSize / 2; i <= _kernelSize / 2; ++i)
     {
         std::vector<int> row;
-        for (int j = -kernelSize / 2; j <= kernelSize / 2; ++j)
+        for (int j = -_kernelSize / 2; j <= _kernelSize / 2; ++j)
         {
             kernel_value = 100 * std::exp(-(std::pow(i, 2) + std::pow(j, 2)) / (2.0 * std::pow(std_dev, 2))); // 1.0 / (2.0 * M_PI * std::pow(std_dev, 2))
             kernel_factor += kernel_value;
@@ -199,6 +219,85 @@ void GaussianFilter::apply(Image &image)
     }
 
     convolve(image, kernel, kernel_factor);
+}
+
+void GaussianFilter::configure()
+{
+    do
+    {
+        std::cout << "Please enter the kernel size: ";
+        std::cin >> _kernelSize;
+        if (_kernelSize < 1)
+        {
+            std::cout << "Kernel size must be greater than 0." << std::endl;
+        }
+    } while (_kernelSize < 1);
+    std::cout << std::endl;
+}
+
+GaussianFilter::GaussianFilter() : _kernelSize(0)
+{
+}
+
+SuperFilter::SuperFilter()
+{
+    _filters.push_back(std::make_unique<GrayFilter>());
+}
+
+// Apply method
+void SuperFilter::apply(Image &image)
+{
+    for (auto &filter : _filters)
+    {
+        filter->apply(image);
+    }
+}
+
+// Configure method
+void SuperFilter::configure()
+{
+    char input;
+    std::cout << "Configure your SuperFilter. Add as many filters as you want:" << std::endl;
+    while (true)
+    {
+        std::cout << "i: Invert the image" << std::endl;
+        std::cout << "b: Change the brightness of the image" << std::endl;
+        std::cout << "c: Change the contrast of the image" << std::endl;
+        std::cout << "g: Make the image gray" << std::endl;
+        std::cout << "f: Fuzzy/Gaussian filter" << std::endl;
+        std::cout << "d: Done with adding filters" << std::endl;
+        std::cin >> input;
+        switch (input)
+        {
+        case 'i':
+            _filters.push_back(std::make_unique<InvertFilter>());
+            _filters.back()->configure();
+            break;
+        case 'b':
+            _filters.push_back(std::make_unique<BrightnessFilter>());
+            _filters.back()->configure();
+            break;
+        case 'c':
+            _filters.push_back(std::make_unique<ContrastFilter>());
+            _filters.back()->configure();
+            break;
+        case 'g':
+            _filters.push_back(std::make_unique<GrayFilter>());
+            _filters.back()->configure();
+            break;
+        case 'f':
+            _filters.push_back(std::make_unique<GaussianFilter>());
+            _filters.back()->configure();
+            break;
+        case 'd':
+            return;
+        default:
+            std::cout << "Unknown command. Try again." << std::endl;
+            break;
+        }
+        std::cout << "Filter added." << std::endl;
+        std::cout << "Now, you can add another filter:" << std::endl;
+    }
 }
 
 /* ---------- OLD FILTER ----------
