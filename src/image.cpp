@@ -43,7 +43,14 @@ void Image::showImage() const
 void Image::saveImage() const
 {
     cv::Mat image = convertImageDataToMat();
-    cv::imwrite("image.jpg", image);
+
+    std::string image_name;
+
+    std::cout << "New Image Name (with file ending (e.g. .jpg)): ";
+    std::cin >> image_name;
+    std ::cout << "Saving the image." << std::endl << std::endl;
+
+    cv::imwrite(image_name, image);
 }
 
 std::vector<std::vector<std::vector<int>>> Image::getImageData() const
