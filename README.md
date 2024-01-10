@@ -190,7 +190,7 @@ The Super Filter makes it possible to combine and execute the above-mentioned fi
 ## Software Architecture
 ### Overview
 To understand how our software is implemented, the following class diagram provides a comprehensive view of the project's structure:
-<img src="Examples/UMLClassDiagram.png" alt="UML Class Diagram" width="800"/>
+<img src="Examples/UMLClassDiagram.png" alt="UML Class Diagram" width="1200"/>
 
 Our project is composed of several key components, each described briefly below:
 
