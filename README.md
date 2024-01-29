@@ -1,20 +1,28 @@
 # 52: Image Filter Program
-This C++ program allows you to apply various image filters to an input picture. The supported filters include inversion, brightness adjustment, contrast adjustment, grayscale conversion, fuzzy/gaussian filter, edge detection and sharpening.
+This C++ program allows you to apply various image filters to an input picture. The supported filters include inversion, brightness adjustment, contrast adjustment, grayscale conversion, a fuzzy/gaussian filter and a box filter. Furthermore the user has the option to combine multible filters and to apply them together as one "superfilter".
 ### Table of Contents
 
-- [Prerequisites](#prerequisites)
-  - [Install OpenCV on Ubuntu/Linux](#install-opencv-on-ubuntulinux)
-  - [Install OpenCV on Windows](#install-opencv-on-windows)
-- [Getting Started](#getting-started)
-  - [Run the software with cmake & make (tested on Ubuntu/Linux)](#run-the-software-with-cmake--make--tested-on-ubuntulinux)
-  - [Run the software in VSC on Windows](#run-the-software-in-vsc-on-windows)
-  - [First steps](#first-steps)
-- [Filter](#filter)
-  - [Change Brightness](#change-brightness)
-  - [Change Contrast](#change-contrast)
-  - [Invert Image](#invert-image)
-  - [Gray Image](#gray-image)
-  - [Fuzzy (Gaussian) Filter](#fuzzy-gaussian-filter)
+1. [Prerequisites](#prerequisites)
+    - [Install OpenCV on Ubuntu/Linux](#install-opencv-on-ubuntulinux)
+    - [Install OpenCV on Windows](#install-opencv-on-windows)
+2. [Getting Started](#getting-started)
+    - [Run the software with cmake & make (tested on Ubuntu/Linux)](#run-the-software-with-cmake--make--tested-on-ubuntulinux)
+    - [Run the software in VSC on Windows](#run-the-software-in-vsc-on-windows)
+    - [First steps](#first-steps)
+3. [Filter](#filter)
+    - [Change Brightness](#change-brightness)
+    - [Change Contrast](#change-contrast)
+    - [Invert Image](#invert-image)
+    - [Gray Image](#gray-image)
+    - [Fuzzy (Gaussian) Filter](#fuzzy-gaussian-filter)
+    - [Box Blur](#box-blur)
+    - [Super Filter](#super-filter)
+4. [Software Architecture](#software-architecture)
+    - [Overview](#overview)
+    - [Image Class](#image-class)
+    - [DataLoader Class](#dataloader-class)
+    - [Filter Classes](#filter-classes)
+    - [Main Method](#main-method)
 
 ## Prerequisites
 
@@ -67,13 +75,13 @@ Now you have to type a charcter to apply the respective filte to the image. foll
 - **Contrast (c):** Adjusts the contrast of the image.
 - **Grayscale (g):** Converts the image to grayscale.
 - **Fuzzy/Gaussian Filter (f):** Applies a fuzzy/Gaussian filter to the image.
-- **Show (s):** Displays the current state of the image.
-- **Save (j):** Saves the current image with a new name.
+- **Box Blur (l):** Applies a box linear filter to the image.
+- **Super Filter (x):** Provides the possibility of combining multiple filters together.
+- **Save (s):** Saves the current image with a new name.
 - **Quit (q):** Exits the program.
 If the selected filter needs some additional information it will ask you to enter them. After the filter has succesfully be applied, you are able to apply another filter. To exit the program type ``q``.
 
-Under this Link you can find a demo: <https://www.loom.com/share/c9f261ffe2b64b16a7a6aaefec6a565d?sid=50122a95-986f-4302-91a6-c862d9a17669> .
-
+Demo of version 1 available [here](https://www.loom.com/share/c9f261ffe2b64b16a7a6aaefec6a565d?sid=50122a95-986f-4302-91a6-c862d9a17669).
 ## Filter
 
 ### Change Brightness
@@ -147,5 +155,59 @@ The Fuzzy or Gaussian filter applies a convolution operation using a kernel to s
 
 You can find a good explanation of the gaussian filter in this video: <https://youtu.be/-LD9MxBUFQo?si=P5Uy1HH7WalOFtLM>.
 
+### Box Blur
+A Box linear filter (also known as a box blur) is a form of a low-pass ("blurring") filter in which the value of each pixel of the resulting image is equal to the average value of its neighboring pixels. Similar to the Fuzzy/Gaussian filter, the blurring effect increases with larger kernel sizes.
 
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Kernel size = 5</td>
+    <td>Kernel size = 21</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_box5.jpg" alt="kernel size = 5" width="400"/></td>
+    <td><img src="Examples/0_box21.jpg" alt="kernel size = 21" width="400"/></td>
+  </tr>
+</table>
 
+### Super Filter
+The Super Filter makes it possible to combine and execute the above-mentioned filters in any combination. The examples show a combination of the inversion filter and the Fuzzy/Gaussian filter (kernel size = 5) and a combination of the grayscale filter and the Box linear filter (kernel size = 5).  
+
+<table>
+  <tr>
+    <td>Original Image</td>
+    <td>Inverted & Fuzzy</td>
+    <td>Gray & Box Blur</td>
+  </tr>
+  <tr>
+    <td><img src="Examples/muenchen.jpg" alt="Original Image" width="400"/></td>
+    <td><img src="Examples/0_super_inverted_fuzzy5.jpg" alt="inverted & fuzzy" width="400"/></td>
+    <td><img src="Examples/0_super_gray_box5.jpg" alt="gray & box" width="400"/></td>
+  </tr>
+</table>
+
+## Software Architecture
+### Overview
+To understand how our software is implemented, the following class diagram provides a comprehensive view of the project's structure:
+<img src="Examples/UMLClassDiagram.png" alt="UML Class Diagram" width="1200"/>
+
+Our project is composed of several key components, each described briefly below:
+
+### Image Class
+
+The `Image` class is responsible for storing and managing the data of the provided image. It offers functions to display and save the image, ensuring easy manipulation and storage.
+
+### DataLoader Class
+
+The `DataLoader` class serves as a utility to supply the software with image data. It can read an image file from a specified path and return an `Image` object, facilitating easy input handling.
+
+### Filter Classes
+
+- **Abstract Filter Class**: This is the base class for all filters. It acts as an interface, defining the essential `apply()` method that every filter must implement. This method contains the specific logic for each filter. The `configure()` method, inherited from the parent class, is overridden only when a filter requires specific parameters, such as contrast values or filter sizes.
+- **ConvolutionFilter Class**: Certain filters extend the `ConvolutionFilter` class, which provides additional features specific to convolution operations.
+- **SuperFilter Class**: The `SuperFilter` is a specialized filter that combines multiple filter types. It stores all its constituent filters in a vector, allowing for composite filter operations.
+
+### Main Method
+
+This method is the entry point of the program. It starts by loading an image using the provided input. The core functionality is structured around a while loop containing a switch-case statement. This loop facilitates the application of the selected filter based on user input.

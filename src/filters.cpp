@@ -4,30 +4,13 @@
 #include <iostream>
 #include <cmath>
 
-void change_brightness(std::vector<std::vector<std::vector<int>>> &matrix, int brightness)
+void Filter::configure()
 {
-    for (int i = 0; i < matrix.size(); ++i)
-    {
-        for (int j = 0; j < matrix[0].size(); ++j)
-        {
-            for (int k = 0; k < matrix[0][0].size(); ++k)
-            {
-                matrix[i][j][k] += brightness;
-                if (matrix[i][j][k] > 255)
-                {
-                    matrix[i][j][k] = 255;
-                }
-                else if (matrix[i][j][k] < 0)
-                {
-                    matrix[i][j][k] = 0;
-                }
-            }
-        }
-    }
 }
 
-void invert_image(std::vector<std::vector<std::vector<int>>> &matrix)
+void InvertFilter::apply(Image &image)
 {
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
     for (int i = 0; i < matrix.size(); ++i)
     {
         for (int j = 0; j < matrix[0].size(); ++j)
@@ -38,17 +21,19 @@ void invert_image(std::vector<std::vector<std::vector<int>>> &matrix)
             }
         }
     }
+    image.setImageData(matrix);
 }
 
-void change_contrast(std::vector<std::vector<std::vector<int>>> &matrix, float contrast)
+void BrightnessFilter::apply(Image &image)
 {
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
     for (int i = 0; i < matrix.size(); ++i)
     {
         for (int j = 0; j < matrix[0].size(); ++j)
         {
             for (int k = 0; k < matrix[0][0].size(); ++k)
             {
-                matrix[i][j][k] *= contrast;
+                matrix[i][j][k] += _brightness;
                 if (matrix[i][j][k] > 255)
                 {
                     matrix[i][j][k] = 255;
@@ -60,10 +45,65 @@ void change_contrast(std::vector<std::vector<std::vector<int>>> &matrix, float c
             }
         }
     }
+    image.setImageData(matrix);
 }
 
-void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix)
+void BrightnessFilter::configure()
 {
+    std::cout << "Please enter the brightness value(-100 is very dark, 100 is very bright): ";
+    std::cin >> _brightness;
+    std::cout << std::endl;
+}
+
+BrightnessFilter::BrightnessFilter() : _brightness(0)
+{
+}
+
+void ContrastFilter::apply(Image &image)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        for (int j = 0; j < matrix[0].size(); ++j)
+        {
+            for (int k = 0; k < matrix[0][0].size(); ++k)
+            {
+                matrix[i][j][k] *= _contrast;
+                if (matrix[i][j][k] > 255)
+                {
+                    matrix[i][j][k] = 255;
+                }
+                else if (matrix[i][j][k] < 0)
+                {
+                    matrix[i][j][k] = 0;
+                }
+            }
+        }
+    }
+    image.setImageData(matrix);
+}
+
+void ContrastFilter::configure()
+{
+    do
+    {
+        std::cout << "Please enter the contrast value (0.5 is a very low and 2 is a very high contrast value): ";
+        std::cin >> _contrast;
+        if (_contrast <= 0 || _contrast > 10)
+        {
+            std::cout << "Contrast value must be between 0 and 10." << std::endl;
+        }
+    } while (_contrast <= 0 || _contrast > 10);
+    std::cout << std::endl;
+}
+
+ContrastFilter::ContrastFilter() : _contrast(0)
+{
+}
+
+void GrayFilter::apply(Image &image)
+{
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
     for (int i = 0; i < matrix.size(); ++i)
     {
         for (int j = 0; j < matrix[0].size(); ++j)
@@ -74,55 +114,13 @@ void make_image_gray(std::vector<std::vector<std::vector<int>>> &matrix)
             matrix[i][j][2] = gray;
         }
     }
+    image.setImageData(matrix);
 }
 
-void gaussian(std::vector<std::vector<std::vector<int>>> &matrix, const int kernelSize)
+void ConvolutionFilter::pad(Image &image, const int kernelSize)
 {
-    std::vector<std::vector<int>> kernel;
-    int kernel_factor = 0;
-    float std_dev = kernelSize / (2.0 * 3.14);
-    int kernel_value = 0;
+    std::vector<std::vector<std::vector<int>>> matrix = image.getImageData();
 
-    for (int i = -kernelSize / 2; i <= kernelSize / 2; ++i)
-    {
-        std::vector<int> row;
-        for (int j = -kernelSize / 2; j <= kernelSize / 2; ++j)
-        {
-            kernel_value = 100 * std::exp(-(std::pow(i, 2) + std::pow(j, 2)) / (2.0 * std::pow(std_dev, 2))); // 1.0 / (2.0 * M_PI * std::pow(std_dev, 2))
-            kernel_factor += kernel_value;
-            row.push_back(kernel_value);
-        }
-        kernel.push_back(row);
-    }
-    convolution(matrix, kernel, kernel_factor);
-}
-
-void edge_detection(std::vector<std::vector<std::vector<int>>> &matrix)
-{
-    std::vector<std::vector<int>> kernel;
-    kernel = {
-        {-1, -1, -1},
-        {-1, 8, -1},
-        {-1, -1, -1}};
-
-    convolution(matrix, kernel, 1);
-}
-
-void sharpen(std::vector<std::vector<std::vector<int>>> &matrix)
-{
-    std::vector<std::vector<int>> kernel;
-    kernel = {
-        {-1, -4, -6, -4, -1},
-        {-4, -16, -24, -16, -4},
-        {-6, -24, 476, -24, -6},
-        {-4, -16, -24, -16, -4},
-        {-1, -4, -6, -4, -1}};
-
-    convolution(matrix, kernel, 256);
-}
-
-std::vector<std::vector<std::vector<int>>> padding(std::vector<std::vector<std::vector<int>>> &matrix, const int kernelSize)
-{
     int n = matrix.size();
     int m = matrix[0].size();
     int d = matrix[0][0].size();
@@ -153,18 +151,20 @@ std::vector<std::vector<std::vector<int>>> padding(std::vector<std::vector<std::
             pad_matrix[i + edge][j + edge] = matrix[i][j];
         }
     }
-    return pad_matrix;
+
+    image.setImageData(pad_matrix);
 }
 
-void convolution(std::vector<std::vector<std::vector<int>>> &matrix, const std::vector<std::vector<int>> &kernel, const int kernel_factor)
+void ConvolutionFilter::convolve(Image &image, const std::vector<std::vector<int>> &kernel, const int kernel_factor)
 {
-    int m = matrix.size();
-    int n = matrix[0].size();
-    int d = matrix[0][0].size();
+    std::vector<std::vector<std::vector<int>>> new_matrix = image.getImageData();
 
-    std::vector<std::vector<std::vector<int>>> new_matrix = matrix;
+    int m = new_matrix.size();
+    int n = new_matrix[0].size();
+    int d = new_matrix[0][0].size();
 
-    std::vector<std::vector<std::vector<int>>> pad_matrix = padding(matrix, kernel.size());
+    pad(image, kernel.size());
+    std::vector<std::vector<std::vector<int>>> pad_matrix = image.getImageData();
 
     int edge = kernel.size() - 1;
 
@@ -195,5 +195,162 @@ void convolution(std::vector<std::vector<std::vector<int>>> &matrix, const std::
         }
     }
 
-    matrix = new_matrix;
+    image.setImageData(new_matrix);
+}
+
+void GaussianFilter::apply(Image &image)
+{
+    std::vector<std::vector<int>> kernel;
+    int kernel_factor = 0;
+    int kernel_value = 0;
+
+    float std_dev = _kernelSize / (2.0 * 3.14);
+
+    for (int i = -_kernelSize / 2; i <= _kernelSize / 2; ++i)
+    {
+        std::vector<int> row;
+        for (int j = -_kernelSize / 2; j <= _kernelSize / 2; ++j)
+        {
+            kernel_value = 100 * std::exp(-(std::pow(i, 2) + std::pow(j, 2)) / (2.0 * std::pow(std_dev, 2))); // 1.0 / (2.0 * M_PI * std::pow(std_dev, 2))
+            kernel_factor += kernel_value;
+            row.push_back(kernel_value);
+        }
+        kernel.push_back(row);
+    }
+
+    convolve(image, kernel, kernel_factor);
+}
+
+void GaussianFilter::configure()
+{
+    do
+    {
+        std::cout << "Please enter the kernel size: ";
+        std::cin >> _kernelSize;
+        if (_kernelSize < 1)
+        {
+            std::cout << "Kernel size must be greater than 0." << std::endl;
+        }
+    } while (_kernelSize < 1);
+    std::cout << std::endl;
+}
+
+GaussianFilter::GaussianFilter() : _kernelSize(0)
+{
+}
+
+void BoxBlur::apply(Image &image)
+{
+    int kernel_factor = _kernelSize * _kernelSize;
+
+    std::vector<std::vector<int>> kernel;
+
+    kernel.assign(_kernelSize, std::vector<int>(_kernelSize, 1));
+
+    /*if (kernel_factor % 2 == 1)
+    {
+        kernel.assign(_kernelSize, std::vector<int>(_kernelSize, 1));
+    }
+    else
+    {
+        kernel.assign(_kernelSize + 1, std::vector<int>(_kernelSize + 1, 0));
+        for (int i = 1; i < _kernelSize; i++)
+        {
+            for (int j = 1; j < _kernelSize; j++)
+            {
+                kernel[i][j] = 1;
+            }
+        }
+        kernel_factor = (_kernelSize - 1) * (_kernelSize - 1);
+    }*/
+
+    convolve(image, kernel, kernel_factor);
+}
+
+void BoxBlur::configure()
+{
+    do
+    {
+        std::cout << "Please enter the kernel size (odd): ";
+        std::cin >> _kernelSize;
+        if (_kernelSize < 1)
+        {
+            std::cout << "Kernel size must be greater than 0." << std::endl;
+        }
+        else if (_kernelSize % 2 == 0)
+        {
+            std::cout << "Kernel size must be an odd number." << std::endl;
+        }
+
+    } while (_kernelSize < 1 || _kernelSize % 2 == 0);
+    std::cout << std::endl;
+}
+
+BoxBlur::BoxBlur() : _kernelSize(0)
+{
+}
+
+SuperFilter::SuperFilter()
+{
+}
+
+// Apply method
+void SuperFilter::apply(Image &image)
+{
+    for (auto &filter : _filters)
+    {
+        filter->apply(image);
+    }
+}
+
+// Configure method
+void SuperFilter::configure()
+{
+    char input;
+    std::cout << "Configure your SuperFilter. Add as many filters as you want:" << std::endl;
+    while (true)
+    {
+        std::cout << "i: Invert the image" << std::endl;
+        std::cout << "b: Change the brightness of the image" << std::endl;
+        std::cout << "c: Change the contrast of the image" << std::endl;
+        std::cout << "g: Make the image gray" << std::endl;
+        std::cout << "f: Fuzzy/Gaussian filter" << std::endl;
+        std::cout << "l: Box linear filter" << std::endl;
+        std::cout << "d: Done with adding filters" << std::endl;
+        std::cin >> input;
+        switch (input)
+        {
+        case 'i':
+            _filters.push_back(std::make_unique<InvertFilter>());
+            _filters.back()->configure();
+            break;
+        case 'b':
+            _filters.push_back(std::make_unique<BrightnessFilter>());
+            _filters.back()->configure();
+            break;
+        case 'c':
+            _filters.push_back(std::make_unique<ContrastFilter>());
+            _filters.back()->configure();
+            break;
+        case 'g':
+            _filters.push_back(std::make_unique<GrayFilter>());
+            _filters.back()->configure();
+            break;
+        case 'f':
+            _filters.push_back(std::make_unique<GaussianFilter>());
+            _filters.back()->configure();
+            break;
+        case 'l':
+            _filters.push_back(std::make_unique<BoxBlur>());
+            _filters.back()->configure();
+            break;
+        case 'd':
+            return;
+        default:
+            std::cout << "Unknown command. Try again." << std::endl;
+            break;
+        }
+        std::cout << "Filter added." << std::endl;
+        std::cout << "Now, you can add another filter:" << std::endl;
+    }
 }
